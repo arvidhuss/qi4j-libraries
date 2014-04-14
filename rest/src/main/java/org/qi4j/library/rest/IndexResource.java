@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import org.qi4j.api.injection.scope.Service;
 import org.qi4j.index.rdf.indexing.RdfExporter;
+import org.qi4j.spi.query.IndexExporter;
 import org.restlet.data.MediaType;
 import org.restlet.representation.OutputRepresentation;
 import org.restlet.representation.Representation;
@@ -36,7 +37,7 @@ public class IndexResource
     extends ServerResource
 {
     @Service
-    private RdfExporter exporter;
+    private IndexExporter exporter;
 
     public IndexResource()
     {
@@ -52,17 +53,20 @@ public class IndexResource
     public Representation get( Variant variant )
         throws ResourceException
     {
-        if( variant.getMediaType().equals( MediaType.APPLICATION_RDF_XML ) )
+        if( exporter instanceof RdfExporter )
         {
-            return new RdfXmlOutputRepresentation();
-        }
-        else if( variant.getMediaType().equals( MediaType.APPLICATION_RDF_TRIG ) )
-        {
-            return new RdfTrigOutputRepresentation( MediaType.APPLICATION_RDF_TRIG );
-        }
-        else if( variant.getMediaType().equals( MediaType.TEXT_PLAIN ) )
-        {
-            return new RdfTrigOutputRepresentation( MediaType.TEXT_PLAIN );
+            if( variant.getMediaType().equals( MediaType.APPLICATION_RDF_XML ) )
+            {
+                return new RdfXmlOutputRepresentation();
+            }
+            else if( variant.getMediaType().equals( MediaType.APPLICATION_RDF_TRIG ) )
+            {
+                return new RdfTrigOutputRepresentation( MediaType.APPLICATION_RDF_TRIG );
+            }
+            else if( variant.getMediaType().equals( MediaType.TEXT_PLAIN ) )
+            {
+                return new RdfTrigOutputRepresentation( MediaType.TEXT_PLAIN );
+            }
         }
 
         return null;

@@ -42,6 +42,7 @@ import org.openrdf.query.resultio.sparqlxml.SPARQLResultsXMLWriter;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.qi4j.api.common.Optional;
 import org.qi4j.api.injection.scope.Service;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
@@ -62,6 +63,7 @@ import static org.openrdf.http.protocol.Protocol.*;
 public class SPARQLResource
     extends ServerResource
 {
+    @Optional
     @Service
     Repository repository;
 
